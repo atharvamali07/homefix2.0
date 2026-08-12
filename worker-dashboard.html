@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Worker Dashboard - Gharatil Seva</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-950 text-white min-h-screen p-4 sm:p-6 md:p-10">
+
+    <!-- Main Dashboard Container -->
+    <div class="max-w-2xl mx-auto bg-gray-900/80 backdrop-blur-xl p-6 sm:p-8 md:p-10 rounded-3xl shadow-2xl border border-gray-800">
+        
+        <!-- Header & Duty Control -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4 border-b border-gray-800 pb-6">
+            <div>
+                <h2 class="text-3xl font-extrabold text-purple-400 tracking-tight">Worker Dashboard</h2>
+                <p class="text-xs text-gray-400 mt-1">Pune Service Network Portal</p>
+            </div>
+            
+            <div class="flex items-center gap-6 self-end md:self-auto">
+                <!-- Duty ON/OFF Toggle -->
+                <div class="flex items-center gap-3 bg-gray-900/90 px-4 py-2 rounded-2xl border border-gray-800">
+                    <span id="duty-indicator" class="w-2.5 h-2.5 rounded-full bg-red-500"></span>
+                    <span id="duty-label" class="text-xs font-bold text-red-400 uppercase tracking-wider">Duty OFF</span>
+                    <label class="relative inline-flex items-center cursor-pointer ml-1">
+                        <input type="checkbox" id="duty-toggle" class="sr-only peer" onchange="toggleDuty()">
+                        <div class="w-11 h-6 bg-gray-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
+                    </label>
+                </div>
+
+                <a href="index.html" class="text-xs font-semibold text-gray-400 hover:text-white transition-colors bg-gray-800 px-3.5 py-2 rounded-xl border border-gray-700/60">
+                    Logout
+                </a>
+            </div>
+        </div>
+
+        <!-- Area Selection for Worker -->
+        <div class="mb-8 bg-gray-900/60 p-5 rounded-2xl border border-gray-800">
+            <label class="block text-xs text-gray-300 mb-2.5 font-semibold tracking-wide">Tumcha Duty Area Nivda (Pune):</label>
+            <select id="worker-area" class="w-full px-4 py-3.5 bg-gray-800/90 border border-gray-700 rounded-xl focus:outline-none focus:border-purple-500 text-white text-sm transition-all cursor-pointer">
+                <option value="Swargate">Swargate</option>
+                <option value="Katraj">Katraj</option>
+                <option value="Shivajinagar">Shivajinagar</option>
+                <option value="Kothrud">Kothrud</option>
+                <option value="Hadapsar">Hadapsar</option>
+                <option value="Hinjewadi">Hinjewadi</option>
+                <option value="Viman Nagar">Viman Nagar</option>
+                <option value="Baner">Baner</option>
+                <option value="Wakad">Wakad</option>
+            </select>
+        </div>
+
+        <!-- Incoming Orders Section -->
+        <div id="orders-section" class="flex flex-col gap-4">
+            <h3 class="text-lg font-bold text-gray-200 tracking-wide mb-2 flex items-center justify-between">
+                <span>New Order Requests</span>
+                <span class="text-xs font-normal text-purple-400 bg-purple-950/60 px-2.5 py-1 rounded-full border border-purple-800/50">Live Updates</span>
+            </h3>
+            
+            <!-- Sample Order Card -->
+            <div id="order-card" class="bg-gray-800/90 border-2 border-purple-500/40 p-5 md:p-6 rounded-2xl flex flex-col gap-4 shadow-xl shadow-purple-900/10 transition-all hover:border-purple-500/70">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <span class="bg-purple-600/30 text-purple-300 border border-purple-500/40 text-xs px-3 py-1 rounded-full font-semibold">Plumbing</span>
+                        <p class="text-xs text-gray-300 mt-3"><strong>Date &amp; Time:</strong> 10 Aug 2026, 11:00 AM</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-emerald-400 font-extrabold text-xl">₹ 500</span>
+                        <p class="text-xs text-gray-400 mt-0.5">Offered Payment</p>
+                    </div>
+                </div>
+
+                <!-- Customer Problem Photo & Location Preview -->
+                <div class="flex items-center gap-4 bg-gray-950/80 p-3.5 rounded-xl border border-gray-800">
+                    <div class="w-16 h-16 bg-gray-800 rounded-lg flex items-center justify-center text-xs text-gray-400 border border-gray-700 shrink-0 font-medium">
+                        [Photo]
+                    </div>
+                    <div>
+                        <p class="text-xs text-purple-400 font-semibold mb-0.5">Customer Exact Address:</p>
+                        <p class="text-sm text-white font-medium line-clamp-2">Flat 402, Shivtej Heights, Near Swargate, Pune</p>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex gap-3 mt-2">
+                    <button onclick="acceptOrder()" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white py-3.5 rounded-xl font-bold text-sm transition shadow-lg shadow-emerald-900/20 active:scale-[0.99]">
+                        Accept Order
+                    </button>
+                    <button onclick="rejectOrder()" class="flex-1 bg-gray-800 hover:bg-gray-700 text-gray-300 py-3.5 rounded-xl font-semibold text-sm transition border border-gray-700 active:scale-[0.99]">
+                        Reject
+                    </button>
+                </div>
+            </div>
+
+            <!-- Empty State -->
+            <div id="no-orders" class="hidden text-center py-12 bg-gray-900/40 rounded-2xl border border-dashed border-gray-800 text-gray-500 text-sm">
+                Saddhya kontihi navin order nahiye. Duty ON theva!
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function toggleDuty() {
+            const toggle = document.getElementById('duty-toggle');
+            const label = document.getElementById('duty-label');
+            const indicator = document.getElementById('duty-indicator');
+            
+            if (toggle.checked) {
+                label.textContent = "Duty ON";
+                label.className = "text-xs font-bold text-emerald-400 uppercase tracking-wider";
+                indicator.className = "w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse";
+            } else {
+                label.textContent = "Duty OFF";
+                label.className = "text-xs font-bold text-red-400 uppercase tracking-wider";
+                indicator.className = "w-2.5 h-2.5 rounded-full bg-red-500";
+            }
+        }
+
+        function acceptOrder() {
+            alert("Order Accept Zali! Customer la confirmation message gela ahe ani Google Map navigation chalu hot ahe.");
+        }
+
+        function rejectOrder() {
+            document.getElementById('order-card').style.display = 'none';
+            document.getElementById('no-orders').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
