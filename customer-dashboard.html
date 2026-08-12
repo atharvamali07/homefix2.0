@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Dashboard - Gharatil Seva</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-950 text-white min-h-screen p-4 sm:p-6 md:p-8 font-sans">
+
+    <div class="max-w-xl mx-auto bg-gray-900/80 backdrop-blur-xl p-6 sm:p-8 md:p-10 rounded-3xl shadow-2xl border border-gray-800">
+        
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-8 border-b border-gray-800 pb-5">
+            <div>
+                <h2 class="text-xl sm:text-2xl font-extrabold text-emerald-400 tracking-tight">Gharatil Seva Booking</h2>
+                <p class="text-xs text-gray-400 mt-1" id="welcome-text">Instant Appointment Booking (Pune)</p>
+            </div>
+            <a href="index.html" class="text-xs text-gray-400 hover:text-white font-semibold bg-gray-800 border border-gray-700 px-3.5 py-2 rounded-xl transition">
+                Logout
+            </a>
+        </div>
+        
+        <!-- Booking Form -->
+        <form id="booking-form" class="flex flex-col gap-5">
+            
+            <!-- Service Category Selection -->
+            <div>
+                <label class="block text-xs text-gray-300 mb-1.5 font-semibold">Kamacha Prakar Nivda (Service Type) <span class="text-emerald-400">*</span></label>
+                <select id="service-type" required class="w-full px-4 py-3.5 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:border-emerald-500 text-sm text-white cursor-pointer transition">
+                    <option value="" disabled selected>-- Seva Nivda --</option>
+                    <option value="Plumbing">🔧 Plumbing (Nal/Pipe Kam)</option>
+                    <option value="Electrician">⚡ Electrician (Veej Kam)</option>
+                    <option value="Painter">🎨 Painter (Rang Kaam)</option>
+                    <option value="Housekeeping">🧹 Housekeeping (Safai)</option>
+                </select>
+            </div>
+
+            <!-- Pune Area Selection -->
+            <div>
+                <label class="block text-xs text-gray-300 mb-1.5 font-semibold">Tumcha Pune Area Nivda <span class="text-emerald-400">*</span></label>
+                <select id="booking-area" required class="w-full px-4 py-3.5 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:border-emerald-500 text-sm text-white cursor-pointer transition">
+                    <option value="" disabled selected>-- Area Nivda --</option>
+                    <option value="Swargate">Swargate</option>
+                    <option value="Katraj">Katraj</option>
+                    <option value="Shivajinagar">Shivajinagar</option>
+                    <option value="Kothrud">Kothrud</option>
+                    <option value="Hadapsar">Hadapsar</option>
+                    <option value="Hinjewadi">Hinjewadi</option>
+                    <option value="Viman Nagar">Viman Nagar</option>
+                    <option value="Baner">Baner</option>
+                    <option value="Wakad">Wakad</option>
+                </select>
+            </div>
+
+            <!-- Problem Photo Upload with Live Preview -->
+            <div>
+                <label class="block text-xs text-gray-300 mb-1.5 font-semibold">Kamacha Photo Upload Kara</label>
+                <input type="file" id="problem-photo" accept="image/*" onchange="previewImage(event)" class="w-full text-xs text-gray-400 bg-gray-800 border border-gray-700 rounded-xl cursor-pointer file:mr-4 file:py-3 file:px-4 file:rounded-l-xl file:border-0 file:text-xs file:font-semibold file:bg-emerald-600 file:text-white hover:file:bg-emerald-500">
+                <div id="image-preview-container" class="hidden mt-3 flex items-center gap-3 bg-gray-800/50 p-3 rounded-xl border border-gray-700">
+                    <img id="image-preview" src="#" alt="Preview" class="w-16 h-16 object-cover rounded-lg border border-emerald-500">
+                    <span class="text-xs text-emerald-400 font-medium">Photo Selected!</span>
+                </div>
+            </div>
+
+            <!-- Payment / Budget Offer -->
+            <div>
+                <label class="block text-xs text-gray-300 mb-1.5 font-semibold">Tumhi kiti payment deu shakta? (₹ Budget) <span class="text-emerald-400">*</span></label>
+                <input type="number" id="payment-budget" required placeholder="Ex. 500" class="w-full px-4 py-3.5 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:border-emerald-500 text-sm text-white transition">
+            </div>
+
+            <!-- Date and Time -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs text-gray-300 mb-1.5 font-semibold">Date (Tarik) <span class="text-emerald-400">*</span></label>
+                    <input type="date" id="appointment-date" required class="w-full px-4 py-3.5 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:border-emerald-500 text-sm text-white transition">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-300 mb-1.5 font-semibold">Time (Vel) <span class="text-emerald-400">*</span></label>
+                    <input type="time" id="appointment-time" required class="w-full px-4 py-3.5 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:border-emerald-500 text-sm text-white transition">
+                </div>
+            </div>
+
+            <!-- Manual Exact Location / Address -->
+            <div>
+                <label class="block text-xs text-gray-300 mb-1.5 font-semibold">Exact Address (Sampurna Pata) <span class="text-emerald-400">*</span></label>
+                <textarea id="manual-address" rows="3" required placeholder="Flat No, Building Name, Landmark..." class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl focus:outline-none focus:border-emerald-500 text-sm text-white resize-none transition"></textarea>
+            </div>
+
+            <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-4 rounded-xl transition shadow-lg text-sm mt-2 active:scale-[0.99] flex items-center justify-center gap-2">
+                <span>Booking Confirm Kara</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                </svg>
+            </button>
+        </form>
+
+        <!-- Status Card (Appears after submission) -->
+        <div id="status-box" class="hidden mt-6 p-6 bg-gray-800/90 border border-emerald-500/50 rounded-2xl text-center flex-col items-center gap-3">
+            <div class="w-10 h-10 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center mx-auto mb-1">
+                <svg class="w-6 h-6 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+            </div>
+            <h3 class="text-base font-bold text-emerald-400">Appointment Book Zali Ahe!</h3>
+            <p class="text-xs text-gray-300 leading-relaxed">Tumchya area madhil matching worker la request pathavli ahe. Worker kadoon accept zalyavar live tracking chalu hoil.</p>
+            <button onclick="window.location.reload()" class="mt-2 text-xs bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-xl transition font-semibold">Nave Booking Kara</button>
+        </div>
+    </div>
+
+    <script>
+        function previewImage(event) {
+            const input = event.target;
+            const previewContainer = document.getElementById('image-preview-container');
+            const previewImage = document.getElementById('image-preview');
+
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImage.src = e.target.result;
+                    previewContainer.classList.remove('hidden');
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        document.getElementById('booking-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const bookingData = {
+                service: document.getElementById('service-type').value,
+                area: document.getElementById('booking-area').value,
+                budget: document.getElementById('payment-budget').value,
+                date: document.getElementById('appointment-date').value,
+                time: document.getElementById('appointment-time').value,
+                address: document.getElementById('manual-address').value,
+                status: 'Pending'
+            };
+
+            // Save to localStorage so Worker Dashboard can access it
+            localStorage.setItem('gharatil_seva_latest_booking', JSON.stringify(bookingData));
+            
+            document.getElementById('booking-form').classList.add('hidden');
+            document.getElementById('status-box').classList.remove('hidden');
+            document.getElementById('status-box').classList.add('flex');
+        });
+    </script>
+</body>
+</html>
